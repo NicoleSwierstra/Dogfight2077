@@ -9,6 +9,8 @@ const double pioverdiv = 6.28318530718 / divisions;
 const int rings = 10;
 const float scale = 1.0f;
 
+int size, sizeccw, sizecw;
+
 GraphicsSun::GraphicsSun() {
 	sunShader = new Shader("res/shaders/sun.shader");
 	vb = new VertexBuffer * [3];
@@ -16,18 +18,19 @@ GraphicsSun::GraphicsSun() {
 	glm::vec3 *verts = new glm::vec3[divisions + 1];
 	std::vector<int> _ebo;
 
-	for (int i = 1; i <= divisions; i++) {
+	for (int i = 1; i < divisions; i++) {
 		double theta = pioverdiv * (i - 1);
 		verts[i] = glm::vec3(cos(theta) * scale, sin(theta) * scale, 0.0f);
 		_ebo.insert(_ebo.end(), {i, 0, i+1});
 	}
+
+	size = _ebo.size();
 	
 	_ebo[_ebo.size() - 1] = 1; //make it a loop
 	ebo = new EBO(&_ebo, sizeof(int) * _ebo.size());
 
 	vb[0] = new VertexBuffer(verts, (divisions + 1) * sizeof(glm::vec3));
 	delete[] verts;
-
 
 	std::vector<glm::vec3> verts1;
 	std::vector<glm::vec3> verts2;
@@ -50,23 +53,39 @@ GraphicsSun::GraphicsSun() {
 	}
 	vb[1] = new VertexBuffer(verts1.data(), verts1.size() * sizeof(glm::vec3));
 	vb[2] = new VertexBuffer(verts2.data(), verts2.size() * sizeof(glm::vec3));
+
+	sizecw = verts1.size();
+	sizeccw = verts2.size();
 }
 
 void GraphicsSun::Update()
 {
+
 }
 
 void GraphicsSun::Render()
 {
+	sunShader->Bind();
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, 0, 16, 0);
 	ChaseCam* cam = (ChaseCam*)SceneHandler::active->camera;
-	glm::mat4 view(glm::translate(cam->view, *cam->target));
 	sunShader->SetMat4Uniforms("proj", cam->proj);
-	sunShader->SetMat4Uniforms("view", view);
+	sunShader->SetMat4Uniforms("view", cam->view);
 
 	vb[0]->Bind();
 
+	sunShader->SetFloatUniforms("time", 0);
+
+	glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
+
+	vb[1]->Bind();
 	sunShader->SetFloatUniforms("time", Time::elapsed);
+	glDrawArrays(GL_LINES, 0, sizecw);
+	
+	vb[2]->Bind();
 	sunShader->SetFloatUniforms("time", -Time::elapsed);
+	glDrawArrays(GL_LINES, 0, sizecw);
+
+	vb[2]->UnBind();
+	ebo->UnBind();
 }

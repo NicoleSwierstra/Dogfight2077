@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -158,6 +158,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Engine\Audio\OpenAl\OpenAL.cpp" />
+    <ClCompile Include="src\Engine\Audio\OpenAl\Sound.cpp" />
     <ClCompile Include="src\Engine\Cameras\ChaseCam.cpp" />
     <ClCompile Include="src\Engine\graphics\EBO.cpp" />
     <ClCompile Include="src\Engine\graphics\Mesh.cpp" />
@@ -173,6 +175,7 @@
     <ClCompile Include="src\Engine\util\Time.cpp" />
     <ClCompile Include="src\Engine\Window.cpp" />
     <ClCompile Include="src\game\graphical\BulletHandler.cpp" />
+    <ClCompile Include="src\game\graphical\Sun.cpp" />
     <ClCompile Include="src\game\scenes\CombatScene.cpp" />
     <ClCompile Include="src\game\Enemy.cpp" />
     <ClCompile Include="src\game\Ground.cpp" />
@@ -180,6 +183,8 @@
     <ClCompile Include="src\game\Targets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Engine\Audio\OpenAl\OpenAL.h" />
+    <ClInclude Include="src\Engine\Audio\OpenAl\Sound.h" />
     <ClInclude Include="src\Engine\Cameras\Camera.h" />
     <ClInclude Include="src\Engine\Cameras\ChaseCam.h" />
     <ClInclude Include="src\Engine\graphics\EBO.h" />
@@ -197,6 +202,8 @@
     <ClInclude Include="src\Engine\Physics\Bullet.h" />
     <ClInclude Include="src\Engine\util\Time.h" />
     <ClInclude Include="src\game\BulletHandler.h" />
+    <ClInclude Include="src\game\graphical\BulletHandler.h" />
+    <ClInclude Include="src\game\graphical\Sun.h" />
     <ClInclude Include="src\game\scenes\CombatScene.h" />
     <ClInclude Include="src\game\Enemy.h" />
     <ClInclude Include="src\game\Ground.h" />
@@ -499,6 +506,7 @@
     <None Include="res\shaders\lines.shader" />
     <None Include="res\shaders\planelines.shader" />
     <None Include="res\shaders\player.shader" />
+    <None Include="res\shaders\sun.shader" />
     <None Include="res\shaders\target.shader" />
     <None Include="res\shaders\test.shader" />
     <None Include="res\shaders\text.shader" />

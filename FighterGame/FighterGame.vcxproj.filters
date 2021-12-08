@@ -63,9 +63,6 @@
     <ClCompile Include="src\Engine\gui\TextRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\BulletHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\game\Targets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -76,6 +73,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Engine\oop\SceneHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\graphical\BulletHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\graphical\Sun.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Audio\OpenAl\Sound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Engine\Audio\OpenAl\OpenAL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1004,6 +1013,18 @@
     <ClInclude Include="src\Engine\oop\SceneHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\graphical\BulletHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\graphical\Sun.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Audio\OpenAl\Sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine\Audio\OpenAl\OpenAL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl">
@@ -1427,6 +1448,7 @@
     <None Include="res\shaders\target.shader" />
     <None Include="res\shaders\hud.shader" />
     <None Include="res\shaders\hudTex.shader" />
+    <None Include="res\shaders\sun.shader" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="res\fonts\Roboto\Roboto-Black.ttf" />

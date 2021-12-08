@@ -125,9 +125,16 @@ void Player::rotAngles(bool multi, float pitch, float roll, float yaw) {
 	glm::vec3 rs = rot * glm::vec3(glm::radians(pitch), glm::radians(yaw), glm::radians(roll));
 	
 	if (multi) {
-		glm::quat fr = normalize(glm::quat((rs * Time::dt * 10.0f) + glm::eulerAngles(rot)));
-		rb->getWorldTransform().setRotation(toBT(fr));
-		rot = fr;
+		glm::quat fr = glm::quat((rs * 0.1f) + glm::eulerAngles(rot));
+		if (glm::length(fr) == 1.0f) {
+			rb->getWorldTransform().setRotation(toBT(fr));
+			rot = fr;
+		}
+		else {
+			fr = glm::normalize(fr);
+			rb->getWorldTransform().setRotation(toBT(fr));
+			rot = fr;
+		}
 	}
 	else {
 		rb->setAngularVelocity(toBT(rs));
@@ -232,18 +239,18 @@ void Player::Update()
 		glm::vec3 localFlyTarget = target * rot * 25.0f;
 		float angleOffTarget = glm::acos(glm::dot(Physics.front, glm::normalize(target)));
 
-		deltayaw = std::clamp(localFlyTarget.x, -1.f, 1.f) * YAW_AUTHORITY;
+		deltayaw = std::clamp(localFlyTarget.x, -1.f, 1.f) * (slowed ? PITCH_AUTHORITY : YAW_AUTHORITY);
 		deltapitch = -std::clamp(localFlyTarget.y, -1.f, 1.f) * PITCH_AUTHORITY;
 
 		float agressiveRoll = -std::clamp(localFlyTarget.x * 0.5f, -1.f, 1.f);
 		float wingsLevelRoll = -Physics.right.y;
 		float wingsLevelInfluence = angleOffTarget / glm::radians(30.0f);
 
-		deltaroll = glm::mix(wingsLevelRoll, agressiveRoll, wingsLevelInfluence) * ROLL_AUTHORITY;
+		deltaroll = glm::mix(wingsLevelRoll, agressiveRoll, slowed ? 0.1f : wingsLevelInfluence) * ROLL_AUTHORITY;
 	}
 
 	//rot angles
-	rotAngles(mouse2, deltapitch, deltaroll, deltayaw);
+	rotAngles(slowed, deltapitch, deltaroll, deltayaw);
 	
 	//forces
 	glm::vec3 lift = Physics.up * LIFT * (speed + downspeed) * glm::sign(glm::dot(Physics.up, glm::vec3(0, 1, 0)));
@@ -255,7 +262,7 @@ void Player::Update()
 	Physics.velocity += (lift + thrust + drag + GRAVITY) * Time::dt;
 
 	rb->setLinearVelocity(toBT(Physics.velocity));
-	btVector3 bpos = rb->getInterpolationWorldTransform().getOrigin();
+	btVector3 bpos = rb->getCenterOfMassTransform().getOrigin();
 	pos = toGLM(bpos);
 
 	cam_target = pos + (Physics.up * 0.75f);

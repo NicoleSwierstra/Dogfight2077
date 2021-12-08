@@ -9,10 +9,10 @@ class Scene;
 
 class GameObject {
 protected:
-	std::string name;
 	void updateTrans();
 	glm::mat4 trans;
 public:
+	std::string name;
 	Scene* scene;
 	glm::vec3 pos;
 	glm::quat rot;

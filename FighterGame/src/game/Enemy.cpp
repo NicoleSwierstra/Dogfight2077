@@ -95,7 +95,7 @@ void Enemy::shoot()
 
 		if (rr.hasHit()) {
 			if (rr.m_collisionObject->getUserIndex() == -4)
-				((Player*)player)->takeDamage(0.005f);
+				((Player*)player)->takeDamage(0.025f);
 		}
 	}
 }
@@ -110,11 +110,13 @@ void Enemy::TakeDamage(float dmg)
 
 void Enemy::Update()
 {
+	if(pos.y < 10.0f) scene->deleteGO(this);
+
 	speed = dot(Physics.front, Physics.velocity);
 	float downspeed = -dot(Physics.up, Physics.velocity);
 	float latspeed = dot(Physics.right, Physics.velocity);
 
-	float speedExp = log2(abs(speed + 1));
+	float speedExp = 3.0f;
 
 	//angles
 	float rAuthority = ROLL_AUTHORITY * speedExp,

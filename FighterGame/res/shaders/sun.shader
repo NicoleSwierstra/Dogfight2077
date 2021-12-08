@@ -14,7 +14,7 @@ void main() {
 		vec2(cos(time), sin(time)), vec2(-sin(time), cos(time))
 	);
 	pos *= rot;
-	gl_Position = proj * view * trans * vec4(pos, 0.0f, 1.0f);
+	gl_Position = proj * view * vec4(pos, 0.0f, 1.0f);
 };
 
 #shader fragment

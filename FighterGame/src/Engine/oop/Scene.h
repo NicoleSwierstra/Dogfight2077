@@ -22,7 +22,7 @@ public:
 
 	virtual void init() = 0;
 
-	void Update() {
+	virtual void Update() {
 		for (GameObject* o : objects) {
 			o->Update();
 		}
@@ -34,7 +34,7 @@ public:
 			objects.erase(objects.begin() + index);
 			std::cout << "DeleteIndex: " << index << "\n";
 		}
-		toDelete.clear();
+		if(toDelete.size() > 0) toDelete.clear();
 	}
 
 	void Render() {
