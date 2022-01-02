@@ -1,6 +1,6 @@
 #include "CombatScene.h"
 #include "Cameras/ChaseCam.h"
-#include "Player.h"
+
 #include "Physics/Bullet.h"
 #include "Ground.h"
 #include "Enemy.h"
@@ -14,10 +14,10 @@ CombatScene::CombatScene(Hud* hud)
 }
 
 void CombatScene::init() {
-    Player* p = addGameObject(new Player((ChaseCam*)camera, Bullet.world));
+    p = addGameObject(new Player((ChaseCam*)camera, Bullet.world));
     addGameObject(new Ground(16, 4096, 4096, &camera->view, &camera->proj, Bullet.world));
     for (int i = -5; i <= 5; i++) {
-        addGameObject(new Enemy((ChaseCam*)camera, Bullet.world, glm::vec3(i * 5.0f, i + 40.0f, 120.0f), glm::vec3(10.0f, 180.0f, 0)))->player = (GameObject*)p;
+        addGameObject(new Enemy((ChaseCam*)camera, Bullet.world, glm::vec3(i * 5.0f, i + 40.0f, 120.0f), glm::vec3(0.0f, 180.0f, 0)))->player = (GameObject*)p;
     }
     //addGameObject(new GraphicsSun());
 

@@ -149,12 +149,12 @@ void Player::rotAngles(bool multi, float pitch, float roll, float yaw) {
 	glm::vec2 crosshair_rot(
 		atan2(Physics.front.z, Physics.front.x) * 57.2957795131, asin(Physics.front.y) * 57.2957795131
 	);
-
-	glm::vec2 cam_rot = ((ChaseCam*)SceneHandler::active->camera)->rot;
-	glm::vec2 full_rot = glm::mod(glm::abs(crosshair_rot - cam_rot), glm::vec2(180.0f, 180.0f)) * glm::sign(crosshair_rot - cam_rot);
+	
+	glm::vec2 full_rot = crosshair_rot - cam->rot;
+	full_rot.x = fmod(full_rot.x + 360.0, 360.0);
 	glm::vec2 cursorOffset = full_rot * glm::vec2(0.01f, -0.015f);
 
-	//std::cout << full_rot.x << "," << full_rot.y << "\n";
+	std::cout << full_rot.x << "," << full_rot.y << "\n";
 
 	float ox = 0.01f;
 	float oy = Window::active->aspect * ox;
@@ -184,7 +184,6 @@ void Player::Update()
 	if (Input::getKey(GLFW_KEY_SPACE) || Input::getMouseButton(GLFW_MOUSE_BUTTON_1)) {
 		shoot();
 	}
-
 	
 	float speedExp = log2(abs(speed + 1));
 

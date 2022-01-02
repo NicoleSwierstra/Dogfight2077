@@ -17,6 +17,7 @@ class Enemy : GameObject {
 	const float STABILITY = 0.005f;
 
 	const float SHOOTSPREAD = .0125f;
+	const float SHOOTRANGE = 100.0f;
 
 	const glm::vec3 GRAVITY = glm::vec3(0, -9.81f, 0);
 

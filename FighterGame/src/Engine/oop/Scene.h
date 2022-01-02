@@ -5,6 +5,7 @@
 #include "Cameras/Camera.h"
 #include "GameObject.h"
 #include <iostream>
+#include <algorithm>
 
 class Scene {
 public:
@@ -28,8 +29,8 @@ public:
 		}
 		camera->cam_Update();
 
+		sort(toDelete.begin(), toDelete.end(), std::greater<int>());
 		for (int index : toDelete) {
-			objects[index]->scene = nullptr;
 			delete objects[index];
 			objects.erase(objects.begin() + index);
 			std::cout << "DeleteIndex: " << index << "\n";

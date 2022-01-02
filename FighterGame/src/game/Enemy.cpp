@@ -26,8 +26,8 @@ Enemy::Enemy(ChaseCam* cam, btDiscreteDynamicsWorld* world, glm::vec3 position, 
 
 	btTransform transform = btTransform();
 	transform.setIdentity();
-	transform.setRotation(toBT(rot));
 	transform.setOrigin(toBT(pos));
+	transform.setRotation(toBT(rot));
 	btDefaultMotionState* motionState = new btDefaultMotionState(transform);
 
 	btScalar mass(5.0);
@@ -58,7 +58,7 @@ Enemy::~Enemy()
 
 void Enemy::rotAngles(float pitch, float roll, float yaw)
 {
-	glm::vec3 rs = glm::vec3(glm::radians(pitch), glm::radians(yaw), glm::radians(roll)) * rot;
+	glm::vec3 rs = rot * glm::vec3(glm::radians(pitch), glm::radians(yaw), glm::radians(roll));
 
 	rb->setAngularVelocity(toBT(rs));
 	btQuaternion q = rb->getCenterOfMassTransform().getRotation();
@@ -123,6 +123,7 @@ void Enemy::Update()
 		pAuthority = PITCH_AUTHORITY * speedExp,
 		yAuthority = YAW_AUTHORITY * speedExp;
 
+	float dist = glm::length(player->pos - pos);
 	glm::vec3 target = glm::normalize(player->pos - pos);
 	glm::vec3 localFlyTarget = target * rot * 25.0f;
 	float angleOffTarget = glm::acos(glm::dot(Physics.front, glm::normalize(target)));
@@ -136,24 +137,19 @@ void Enemy::Update()
 	
 	float deltaroll = glm::mix(wingsLevelRoll, agressiveRoll, wingsLevelInfluence) * ROLL_AUTHORITY;
 	
-	if (angleOffTarget < glm::radians(20.0f)) {
+	if (angleOffTarget < glm::radians(30.0f) && dist < SHOOTRANGE) {
 		shoot();
 	}
 
 	//rot angles
 	rotAngles(deltapitch, deltaroll, deltayaw);
 
-	//forces
-	glm::vec3 lift = Physics.up * LIFT * (speed + downspeed) * glm::dot(Physics.up, glm::vec3(0, 1, 0));
 	glm::vec3 thrust = Physics.front * THRUST;
-	glm::vec3 drag = (-Physics.front * (speed * speed * DRAG)) +
-		(Physics.right * -latspeed) +
-		(Physics.up * downspeed);
 
-	Physics.velocity += (lift + thrust + drag + GRAVITY) * Time::dt;
+	Physics.velocity = thrust;
 
 	rb->setLinearVelocity(toBT(Physics.velocity));
-	btVector3 bpos = rb->getCenterOfMassPosition();
+	btVector3 bpos = rb->getCenterOfMassTransform().getOrigin();
 	pos = toGLM(bpos);
 }
 

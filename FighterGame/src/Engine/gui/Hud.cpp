@@ -98,7 +98,6 @@ void Hud::Render()
 			h = std::to_string(*ti[i]->ip);
 		}
 		else __debugbreak();
-
 		tr->RenderText(h, ti[i]->x, ti[i]->y, ti[i]->scale, glm::vec3(1.0f, 1.0f, 1.0f));
 	}
 
